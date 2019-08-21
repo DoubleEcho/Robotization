@@ -1,0 +1,5 @@
+game\saves\
+*.save
+*.rpyb
+*.rpyc
+errors.txt
