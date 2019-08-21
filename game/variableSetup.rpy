@@ -15,3 +15,12 @@ label gameSetup:
         licenseOwner = "Echo"
 
     return
+
+label chapterOneSetup:
+    python:
+        armsHealth = 100
+        legsHealth = 100
+        headHealth = 100
+        bodyHealth = 100
+        licenseOwner = "Xeania Resorts Incorporated"
+    return

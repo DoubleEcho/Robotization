@@ -3,7 +3,6 @@
 # Declare characters used by this game. The color argument colorizes the
 # name of the character.
 
-
 define echo = Character("Echo", color="22b4dd")
 define system = Character("???", color="#33FF66", what_color="#33FF66")
 define cri = Character("CRI", color="#33FF66", what_color="#33FF66")
@@ -11,8 +10,6 @@ define you = Character("[name]")
 image echoNeutral = "echo/Echoclothed.png"
 image echobginit = "EchoLabBackgroundClear.png"
 image echobg = "EchoLabBackground.png"
-
-
 
 # The game starts here.
 
@@ -45,11 +42,10 @@ label start:
     show echobginit at top
     with dissolve
 
-    $ renpy.sound.set_volume(0.3)
+    $ renpy.sound.set_volume(0.1)
     $ renpy.sound.play("sound/ventilator.wav",fadein=2,loop=True)
 
     "You suddenly find that you can see and hear."
-
 
     system "Beginning organic/digital interface confirmation."
 
@@ -73,13 +69,16 @@ label notunderstood:
 
 label understood:
 
-    cri "Thank you. Our administrator has been notified of a successful startup."
+    cri "Thank you. An administrator has been notified of a successful startup."
 
     "Well, well. Look who finally decided to wake up."
 
     show echobg at top
     with dissolve
     hide echobginit
+
+    $ renpy.music.set_volume(0.5)
+    $ renpy.music.play("sound/music/Dark Groove.mp3",fadein=1,loop=True)
 
     show echoNeutral at right
     with easeinright
@@ -105,7 +104,7 @@ label understood:
     echo "... I'm not planning on just selling you off, if that's what it seems like."
     echo "What you do going forward is, to some extent, up to you."
     echo "However, I can make you an offer."
-    echo "We're on a resort planet called /FIXME/. They're always looking for... service bots."
+    echo "We're on a resort planet called Xeania. They're always looking for... service bots."
 
     #echo smile
     echo "Take that as you will."
@@ -161,16 +160,19 @@ label initGender:
     echo "That's everything."
     echo "So for now, I need some private time to get you fixed up."
     echo "See you on the other side."
-
-    $renpy.sound.stop()
+    
+    $renpy.music.stop(fadeout=1)
     hide echoNeutral
     hide echobg
     with fade
 
     cri "Entering standby."
-
+    $renpy.sound.stop(fadeout=1)
     "Everything fades to black."
 
+    $ renpy.pause(3)
+
+    jump chapter1
 
 label endgame:
     return
