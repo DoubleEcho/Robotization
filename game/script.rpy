@@ -3,6 +3,7 @@
 # Declare characters used by this game. The color argument colorizes the
 # name of the character.
 
+define crinvl = Character("CRI", color="#33FF66", what_color="#33FF66", kind=nvl)
 define echo = Character("Echo", color="22b4dd")
 define system = Character("???", color="#33FF66", what_color="#33FF66")
 define cri = Character("CRI", color="#33FF66", what_color="#33FF66")

@@ -1,6 +1,6 @@
 label chapter1:
 
-    call chapterOneSetup
+    call chapterOneSetup from _call_chapterOneSetup
 
     cri "Booting..."
     cri "Interface version 1.0.0."
@@ -34,18 +34,22 @@ label chapter1:
 
 label lookAtStatusPlease:
 menu:
-    "System.status.log();":
-        call systemState
+    "Act.GetStatusLog":
+        call systemState from _call_systemState_1
         jump lookedAtStatus
 
     "... no, I won't.":
-        call butThouMust
+        call butThouMust from _call_butThouMust
         jump lookAtStatusPlease
 
 label lookedAtStatus:
+    
+    echo "Better, isn't it?"
 
 
-    return
+    call setupAllRoamData
+
+    jump freeRoam
 
 label butThouMust:
     if butThouMustCounter < 3:

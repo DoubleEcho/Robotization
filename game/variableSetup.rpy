@@ -24,3 +24,12 @@ label chapterOneSetup:
         bodyHealth = 100
         licenseOwner = "Xeania Resorts Incorporated"
     return
+
+label setupAllRoamData:
+    call locationSetup
+    return
+
+label locationSetup:
+    python:
+        locations = ["Biorobotics Lab"]
+    return
