@@ -5,3 +5,7 @@ game\saves\
 errors.txt
 log.txt
 traceback.txt
+*.bak
+game/saves/navigation.json
+game/saves/persistent
+*.rpymc

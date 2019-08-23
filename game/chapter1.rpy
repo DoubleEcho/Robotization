@@ -12,7 +12,7 @@ label chapter1:
 
     $ renpy.sound.play("sound/ventilator.wav",fadein=2,loop=True)
 
-    show echobg at top
+    show background echo at top
     with fade
 
     cri "Audio/Visual systems connected."
@@ -47,7 +47,7 @@ label lookedAtStatus:
     echo "Better, isn't it?"
 
 
-    call setupAllRoamData
+    call setupAllRoamData from _call_setupAllRoamData
 
     jump freeRoam
 
