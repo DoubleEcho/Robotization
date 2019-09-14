@@ -8,4 +8,5 @@ traceback.txt
 *.bak
 game/saves/navigation.json
 game/saves/persistent
+game/saves/persistent
 *.rpymc

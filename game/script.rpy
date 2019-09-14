@@ -8,9 +8,10 @@ define echo = Character("Echo", color="22b4dd")
 define system = Character("???", color="#33FF66", what_color="#33FF66")
 define cri = Character("CRI", color="#33FF66", what_color="#33FF66")
 define you = Character("[name]")
-image echoNeutral = "echo/Echoclothed.png"
-image echobginit = "EchoLabBackgroundClear.png"
-image echobg = "EchoLabBackground.png"
+image echo neutral= "echo/Echoclothed.png"
+image background echoinit = "background/EchoLabBackgroundClear.png"
+image background echo = "background/EchoLabBackground.png"
+image background trash = "background/trash.jpg"
 
 # The game starts here.
 
@@ -40,7 +41,7 @@ label start:
 
     system "Boot message: {i}Welcome back.{/i}"
 
-    show echobginit at top
+    show background echoinit at top
     with dissolve
 
     $ renpy.sound.set_volume(0.1)
@@ -74,14 +75,13 @@ label understood:
 
     "Well, well. Look who finally decided to wake up."
 
-    show echobg at top
+    show background echo at top
     with dissolve
-    hide echobginit
 
     $ renpy.music.set_volume(0.5)
     $ renpy.music.play("sound/music/Dark Groove.mp3",fadein=1,loop=True)
 
-    show echoNeutral at right
+    show echo neutral at right
     with easeinright
     
     echo "How are you feeling? A little sore, I'd expect."
@@ -163,11 +163,11 @@ label initGender:
     echo "See you on the other side."
     
     $renpy.music.stop(fadeout=1)
-    hide echoNeutral
-    hide echobg
+    hide echo
+    hide background
     with fade
 
-    cri "Entering standby."
+    cri "Powering down..."
     $renpy.sound.stop(fadeout=1)
     "Everything fades to black."
 

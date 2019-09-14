@@ -22,7 +22,7 @@ label chapter1:
 
     $ renpy.music.play("sound/music/Dark Groove.mp3",fadein=1,loop=True)
 
-    show echoNeutral at right
+    show echo neutral at right
     with easeinright
 
     echo "Good morning, Servitor [name]."
@@ -46,6 +46,11 @@ label lookedAtStatus:
     
     echo "Better, isn't it?"
 
+    "We're jumping a little forward in the story here, straight to when the player is let loose."
+    "There's a little more between here and the start of the free roaming section, it just isn't ready yet."
+    "But, most of the code framework for the novel is done."
+    "New characters can be added easily from here on out."
+    $renpy.sound.stop(fadeout=1)
 
     call setupAllRoamData from _call_setupAllRoamData
 
