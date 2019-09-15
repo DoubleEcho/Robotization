@@ -25,7 +25,7 @@ label storyecho0_2:
     jump freeRoam
 
 label storyecho1:
-    echo "Hey, welcome back."
-    echo "I'd like to do a checkup after you've gotten a {i}little{/i} bit more use out of your body."
-    echo "So, just take some time to got out and use it some more, okay?"
+    echo "Hello again."
+    echo "I'd like to do a checkup after you've gotten a {i}little{/i} more use out of your body."
+    echo "So, just take some time to get out and use it some more, okay?"
     jump freeRoam

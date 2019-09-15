@@ -1,5 +1,5 @@
 label freeRoam:
-
+    $ _skipping = True
     $ isRoaming = True
     while isRoaming:
         call screen actionsSelection()
@@ -9,16 +9,40 @@ label endGame:
     return
 
 label moveTo(locationtoGo): 
-    if location != locationtoGo:           
+    if location != locationtoGo:  
+        if locations[location]["region"] != locations[locationtoGo]["region"]:
+            call doCrossRegionTravel(locationtoGo=locationtoGo) from _call_doCrossRegionTravel
+            $ fadeDelay = 2
+        else:
+            $ fadeDelay = 0
         $location = locationtoGo
-        call findCharactersAtCurrentLocation           
-        call displayCurrentLocation
+        call findCharactersAtCurrentLocation from _call_findCharactersAtCurrentLocation           
+        call displayCurrentLocation(pauseAfterFade=fadeDelay) from _call_displayCurrentLocation
         $ cri("Travel to location \"" + locations[location]["name"] + "\" complete.")
         if len(charactersAtCurrentLocation) == 0:
             "It seems like no one is here."
     else:
         cri "System indicates current location matches chosen destination."
         cri "Navigation attempt aborted."
+    return
+
+label doCrossRegionTravel(locationtoGo):
+    call setTravelTimeTo(regionId=locations[locationtoGo]["region"], currentRegionId=locations[location]["region"]) from _call_setTravelTimeTo
+    $cri("Location \""+ locations[locationtoGo]["name"] + "\" is in a different region from current location.")
+    cri "Estimated travel time is [distance] day(s). Proceed anyway?"
+    menu:
+        "Yes.":
+            cri "Confirmation accepted."                    
+            call adjustDate(daysToAdvance=distance) from _call_adjustDate
+            $cri("Expected arrival: " + daysOfWeek[weekDay] + ", " + str(daysSinceActivation) + " days after unit activation.")
+            return
+        "No.":
+            cri "Navigation aborted."
+            jump freeRoam
+
+label setTravelTimeTo(regionId, currentRegionId):
+    python:
+        distance = int(math.floor(math.sqrt((regions[currentRegionId]["x"]-regions[regionId]["x"])**2+(regions[currentRegionId]["y"]-regions[regionId]["y"])**2)))
     return
 
 label findCharactersAtCurrentLocation:
@@ -37,11 +61,14 @@ label hideAllCharacters:
 
     return
 
-label displayCurrentLocation:
-    call hideAllCharacters
+label displayCurrentLocation(pauseAfterFade=0):
+    call hideAllCharacters from _call_hideAllCharacters
+    hide background 
+    with fade
     python:
         renpy.music.stop(fadeout=1)
         renpy.sound.stop(fadeout=1)
+        renpy.pause(pauseAfterFade)
         renpy.show(locations[location]["bg"], at_list=[top])
         renpy.with_statement(fade)
         i = 0
@@ -74,31 +101,32 @@ label advanceDay:
 
 label endOfDay:
     $renpy.music.stop(fadeout=1)
-    call hideAllCharacters
+    call hideAllCharacters from _call_hideAllCharacters_1
     hide background
-    with fade    
-
+    with fade
+    call adjustDate from _call_adjustDate_1
     cri "Entering standby."
     $renpy.sound.stop(fadeout=1)
     "Everything fades to black." 
-    python:
-        renpy.pause(3)
-        if day == 6:
-            day = 0
-        else:
-            day = day + 1
+    $ renpy.pause(1.5) 
     cri "Exiting standby."
-    call setupCharacterLocations
-    call findCharactersAtCurrentLocation
-    call displayCurrentLocation
-    $ cri("It is now " + daysOfWeek[day] + ". Please perform tasks as appropriate.")
+    call setupCharacterLocations from _call_setupCharacterLocations
+    call findCharactersAtCurrentLocation from _call_findCharactersAtCurrentLocation_1
+    call displayCurrentLocation from _call_displayCurrentLocation_1
+    $ cri("It is now " + daysOfWeek[weekDay] + ". Please perform tasks as appropriate.")
     cri "Bioenergy reserves returned to maximum!"
+    return
+
+label adjustDate(daysToAdvance=1):
+    python:
+        weekDay = (weekDay + daysToAdvance) % 7
+        daysSinceActivation += daysToAdvance 
     return
 
 label setupCharacterLocations:
     python:
         for char in characters:
-            characters[char]["location"] = characterLocations[char][day]
+            characters[char]["location"] = characterLocations[char][weekDay]
     return
 
 label systemState:
@@ -135,7 +163,7 @@ screen navigationSelection():
                     null height 10
                     for i in locations:
                         if locations[i]["known"]:
-                            textbutton locations[i]["name"] action [Hide("navigationSelection"), Call("moveTo",locationtoGo=i)]
+                            textbutton regions[locations[i]["region"]]["name"]+": "+locations[i]["name"] action [Hide("navigationSelection"), Call("moveTo",locationtoGo=i)]
 
                     null height 5
                     textbutton "Change Action" action [Hide("navigationSelection"), Show("actionsSelection")]

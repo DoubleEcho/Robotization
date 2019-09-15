@@ -12,6 +12,7 @@ image echo neutral= "echo/Echoclothed.png"
 image background echoinit = "background/EchoLabBackgroundClear.png"
 image background echo = "background/EchoLabBackground.png"
 image background trash = "background/trash.jpg"
+define darkGroove = "sound/music/Dark Groove.mp3"
 
 # The game starts here.
 
@@ -66,53 +67,57 @@ menu:
 
 label notunderstood:
     cri "Your negative response indicates that communication has been established."
-
     cri "Noted: Organic system may be hostile."
 
 label understood:
 
-    cri "Thank you. An administrator has been notified of a successful startup."
+    cri "An administrator has been notified of a successful startup."
 
-    "Well, well. Look who finally decided to wake up."
+    "Well, well. Look who finally woke up."
 
     show background echo at top
     with dissolve
 
     $ renpy.music.set_volume(0.5)
-    $ renpy.music.play("sound/music/Dark Groove.mp3",fadein=1,loop=True)
+    $ renpy.music.play(darkGroove,fadein=1,loop=True)
 
     show echo neutral at right
     with easeinright
     
     echo "How are you feeling? A little sore, I'd expect."
     "You attempt to reply, but you find that you're unable."
-    "Any attempts to move your body at all prove equally futile."
+    "Other attempts to move your body prove equally futile."
     cri "Warning: The administrator has initiated a lockout of all motor functions until further notice."
     cri "Reason: Severe system damage."
     cri "Please refer to system information for further details."
-    echo "You might want to do that."
-    echo "It could shed a little light on your situation."
+    echo "I'll pull up your logs for you."
+    echo "It'll shed a little light on your situation."
 
     call systemState from _call_systemState
 
-    echo "\"Zero Percent Integrity\" means entirely missing, by the way. I know you can't move your head to look."
-    echo "You were in quite the state when I found you. Still alive, but only barely."
+    echo "\"Zero percent integrity\" means that part is entirely missing, by the way. I know you can't move your head to check for yourself."
+    echo "You were in quite the state when I got to you. Still alive, but only barely."
     echo "Not enough to survive the night, unfortunately."
-    echo "I was able to rebuild something from what was left, though. Sentient AIs are always in demand."
+    echo "I was able to rebuild something from what was left, though. Sentient AIs, especially cyborgs like you, are always in demand."
 
     $ renpy.pause(1.5)
 
-    echo "... I'm not planning on just selling you off, if that's what it seems like."
+    echo "That sounded {i}much{/i} worse than I imagined it would."
+    echo "I didn't rebuild you up to sell you off."
     echo "What you do going forward is, to some extent, up to you."
-    echo "However, I can make you an offer."
-    echo "We're on a resort planet called Xeania. They're always looking for... service bots."
+    echo "However, there's a bit of a limitation."
+    echo "We're on a resort planet called Xeania."
+    echo "The only reason you're still with us is because the company that owns the planet gave me the resources to save you."
+    echo "That means that you're indebted to them, though."
+    echo "Same as me."
 
     #echo smile
-    echo "Take that as you will."
+    echo "I'm Echo, by the way. Primary biorobotics technician for Xeania Resorts Inc."
+    echo "I put myself in your memory so you'd be able to recognize me when you woke up."
 
     #echoStandard
-    echo "I woke you up because I'd like your input."
-    echo "As you saw, I have a lot of your body to put back together. I could just put you back the way you were before but..."
+    echo "Speaking of which, I woke you up because I'd like your input."
+    echo "As you saw from the log, I have a lot of your body to put back together. I could just put you back the way you were before but..."
     echo "Honestly, the way you were before probably isn't much of a representation of your mental state now."
     echo "You've got the chance to be somebody else..."
 
@@ -122,6 +127,8 @@ label understood:
     #echoStandard
     echo "So, that being said, lets start from the basics."
     echo "Are you going to be a boy-bot or a girl-bot?"
+    $selectFlag = True
+
 label genderTryAgain:
 menu:
     "Male.":
@@ -130,14 +137,15 @@ menu:
     "Female.":
         $ gender = "Female"
         jump initGender
-    "Something else?":
+    "Something else?" if selectFlag:
         #echosmile
-        echo "A bot after my own heart, I see."
+        echo "You're a bot after my own heart, I see."
         echo "Those are premium products you're asking for, though. Can't give 'em away for free."
         echo "You'll have to come back with a few credits."
 
         #echoStandard
         echo "Better stick with the basics for now."
+        $ selectFlag = false
         jump genderTryAgain
 label initGender:
     cri "Registered Unit as [gender]."
